@@ -215,3 +215,48 @@ on property:init.svc.recovery=running
 
 on property:dev.bootcomplete=1
     setprop sys.io.scheduler bfq
+
+# power save
+on property:sys.perf.profile=0
+  write /sys/class/devfreq/soc:qcom,cpubw/governor "powersave"
+  write /sys/class/kgsl/kgsl-3d0/devfreq/governor "powersave"
+  write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "conservative"
+  write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "conservative"
+  write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 2
+  write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 0
+
+# bias power save
+on property:sys.perf.profile=3
+  write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+  write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
+  write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "conservative"
+  write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "conservative"
+  write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 4
+  write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 1
+
+# balanced
+on property:sys.perf.profile=1
+  write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+  write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
+  write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
+  write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
+  write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 4
+  write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 1
+
+# bias high performance
+on property:sys.perf.profile=4
+  write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+  write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
+  write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "performance"
+  write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "performance"
+  write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 4
+  write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 1
+
+# high performance
+on property:sys.perf.profile=2
+  write /sys/class/devfreq/soc:qcom,cpubw/governor "performance"
+  write /sys/class/kgsl/kgsl-3d0/devfreq/governor "performance"
+  write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "performance"
+  write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "performance"
+  write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 4
+  write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 4
